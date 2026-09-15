@@ -14,6 +14,8 @@ Customer records, per-size order tracking, returns, inventory and business insig
 [![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%7C%20Auth%20%7C%20Storage-3ecf8e?logo=supabase&logoColor=white)](https://supabase.com/)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel&logoColor=white)](https://vercel.com/)
 
+### 🔗 [**View Live App →**](https://al-sami-creations.vercel.app) <!-- confirm this is your primary domain under Vercel → Settings → Domains before publishing, and update if different -->
+
 </div>
 
 ---
@@ -39,6 +41,45 @@ The interface is written in **Roman Urdu**, the language the shop's staff actual
 - 🗑️ **Full audit-safe CRUD** — admins can delete customers, articles, orders, and staff logins, enforced at the database level (not just hidden in the UI)
 - 📱 **Mobile-first, desktop-friendly** — a single responsive codebase that works identically on a shop-floor phone and a back-office laptop
 - 🎨 **Custom boutique branding** — maroon & gold theme, custom logo, Poppins + Playfair Display typography
+
+---
+
+## 📸 Screenshots
+
+<table>
+<tr>
+<td align="center" width="50%"><b>Login</b><br/><img src="docs/screenshots/login-desktop.png" width="100%"/></td>
+<td align="center" width="50%"><b>Login (Mobile)</b><br/><img src="docs/screenshots/login-mobile.png" width="60%"/></td>
+</tr>
+<tr>
+<td align="center"><b>Customer List</b><br/><img src="docs/screenshots/customers-desktop.png" width="100%"/></td>
+<td align="center"><b>Customer List (Mobile)</b><br/><img src="docs/screenshots/customers-mobile.png" width="60%"/></td>
+</tr>
+<tr>
+<td align="center"><b>Order Screen — Pending</b><br/><img src="docs/screenshots/order-screen-desktop.png" width="100%"/></td>
+<td align="center"><b>Order Screen (Mobile)</b><br/><img src="docs/screenshots/order-screen-mobile.png" width="60%"/></td>
+</tr>
+<tr>
+<td align="center"><b>Order Expanded — Size Breakdown</b><br/><img src="docs/screenshots/order-expanded-desktop.png" width="100%"/></td>
+<td align="center"><b>Order Expanded (Mobile)</b><br/><img src="docs/screenshots/order-expanded-mobile.png" width="60%"/></td>
+</tr>
+<tr>
+<td align="center"><b>Partial Delivery</b><br/><img src="docs/screenshots/order-partial-desktop.png" width="100%"/></td>
+<td align="center"><b>Closed Order</b><br/><img src="docs/screenshots/order-closed-desktop.png" width="100%"/></td>
+</tr>
+<tr>
+<td align="center"><b>Order History Timeline</b><br/><img src="docs/screenshots/order-history-desktop.png" width="100%"/></td>
+<td align="center"><b>Customer Details</b><br/><img src="docs/screenshots/customer-info-desktop.png" width="100%"/></td>
+</tr>
+<tr>
+<td align="center"><b>Articles — Sorted by Demand</b><br/><img src="docs/screenshots/articles-desktop.png" width="100%"/></td>
+<td align="center"><b>Articles (Mobile)</b><br/><img src="docs/screenshots/articles-mobile.png" width="60%"/></td>
+</tr>
+<tr>
+<td align="center"><b>Hisaab Kitaab — Insights</b><br/><img src="docs/screenshots/hisaab-desktop.png" width="100%"/></td>
+<td align="center"><b>Hisaab (Mobile)</b><br/><img src="docs/screenshots/hisaab-mobile.png" width="60%"/></td>
+</tr>
+</table>
 
 ---
 
@@ -150,8 +191,6 @@ This project is deployed on **Vercel**:
 1. Import the GitHub repo into Vercel
 2. Add the same three environment variables from step 2 above under **Project Settings → Environment Variables**
 3. Push to `main` — Vercel builds and deploys automatically
-
-**Live app:** [al-sami-creations.vercel.app](https://al-sami-creations.vercel.app) <!-- confirm this is your primary domain under Vercel → Settings → Domains before publishing, and update if different -->
 
 ---
 
