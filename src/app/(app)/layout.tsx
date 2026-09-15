@@ -44,7 +44,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="flex flex-col min-h-screen">
       {isRoot && (
         <header className="sticky top-0 z-30 bg-maroon text-white shadow-md">
-          <div className="flex items-center justify-between px-4 py-3 max-w-3xl mx-auto w-full">
+          <div className="flex items-center justify-between px-4 sm:px-6 lg:px-10 py-3 w-full">
             <div className="flex items-center gap-2.5">
               <Image
                 src="/logo.png"
@@ -78,11 +78,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </header>
       )}
 
-      <main className="flex-1 max-w-3xl mx-auto w-full pb-20">{children}</main>
+      <main className="flex-1 w-full pb-20">{children}</main>
 
       {isRoot && (
         <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gold/30 safe-bottom shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
-          <div className="flex max-w-3xl mx-auto w-full">
+          <div className="flex w-full sm:max-w-md sm:mx-auto">
             {NAV.map(({ href, label, icon: Icon }) => {
               const active = pathname === href;
               return (

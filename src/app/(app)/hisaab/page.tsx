@@ -44,6 +44,7 @@ export default function HisaabPage() {
   const [items, setItems] = useState<ItemRow[]>([]);
   const [returns, setReturns] = useState<ReturnAggRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const todayStr = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   const range = useMemo(() => {
     const now = new Date();
@@ -136,7 +137,7 @@ export default function HisaabPage() {
   }, [items, returns]);
 
   return (
-    <div className="px-4 py-4 space-y-5">
+    <div className="px-4 sm:px-6 lg:px-10 py-4 space-y-5">
       <div>
         <h1 className="font-serif text-xl font-semibold text-maroon-dark mb-3">Hisaab Kitaab</h1>
         <div className="flex gap-1.5 overflow-x-auto pb-1">
@@ -156,9 +157,41 @@ export default function HisaabPage() {
           ))}
         </div>
         {preset === "custom" && (
-          <div className="flex gap-2 mt-2">
-            <input type="date" value={customFrom} onChange={(e) => setCustomFrom(e.target.value)} className="input" />
-            <input type="date" value={customTo} onChange={(e) => setCustomTo(e.target.value)} className="input" />
+          <div className="grid grid-cols-2 gap-2 mt-2 max-w-md">
+            <div>
+              <label className="text-xs font-medium text-ink/60 mb-1 block">Kis Tareekh Se</label>
+              <input
+                type="date"
+                value={customFrom}
+                max={customTo || todayStr}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setCustomFrom(val);
+                  // keep the range logical: "to" can't be before the new "from"
+                  if (customTo && val > customTo) setCustomTo(val);
+                }}
+                className="input"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-ink/60 mb-1 block">Kis Tareekh Tak</label>
+              <input
+                type="date"
+                value={customTo}
+                min={customFrom || undefined}
+                max={todayStr}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  // keep the range logical: "to" can't be before "from"
+                  if (customFrom && val < customFrom) {
+                    setCustomTo(customFrom);
+                    return;
+                  }
+                  setCustomTo(val);
+                }}
+                className="input"
+              />
+            </div>
           </div>
         )}
       </div>
@@ -169,33 +202,35 @@ export default function HisaabPage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
             <StatCard icon={Package} label="Total Orders" value={summary.orders} />
             <StatCard icon={TrendingUp} label="Total Pieces Order Hue" value={summary.ordered} />
             <StatCard icon={Clock} label="Abhi Baqi (Pending)" value={summary.pending} />
             <StatCard icon={Undo2} label="Total Wapsi (Returns)" value={summary.returned} />
           </div>
 
-          <InsightSection
-            icon={TrendingUp}
-            title="Sab Se Zyada Mangi Jane Wali Dresses"
-            emptyText="Is muddat mein koi order nahi mila."
-            rows={topArticles.map((a) => ({ label: a.name, value: a.qty }))}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5 items-start">
+            <InsightSection
+              icon={TrendingUp}
+              title="Sab Se Zyada Mangi Jane Wali Dresses"
+              emptyText="Is muddat mein koi order nahi mila."
+              rows={topArticles.map((a) => ({ label: a.name, value: a.qty }))}
+            />
 
-          <InsightSection
-            icon={Users}
-            title="Sab Se Zyada Order Karne Wale Grahak"
-            emptyText="Is muddat mein koi order nahi mila."
-            rows={topCustomers.map((c) => ({ label: c.name, value: c.qty }))}
-          />
+            <InsightSection
+              icon={Users}
+              title="Sab Se Zyada Order Karne Wale Grahak"
+              emptyText="Is muddat mein koi order nahi mila."
+              rows={topCustomers.map((c) => ({ label: c.name, value: c.qty }))}
+            />
 
-          <InsightSection
-            icon={Undo2}
-            title="Sab Se Zyada Wapsi Karne Wale Grahak"
-            emptyText="Is muddat mein koi wapsi nahi hui."
-            rows={topReturners.map((c) => ({ label: c.name, value: c.qty }))}
-          />
+            <InsightSection
+              icon={Undo2}
+              title="Sab Se Zyada Wapsi Karne Wale Grahak"
+              emptyText="Is muddat mein koi wapsi nahi hui."
+              rows={topReturners.map((c) => ({ label: c.name, value: c.qty }))}
+            />
+          </div>
 
           <p className="text-xs text-ink/40 text-center pt-2">
             Kisi grahak ki poori history dekhne ke liye uske order screen mein &quot;History&quot; tab kholein.

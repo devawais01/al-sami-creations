@@ -4,15 +4,21 @@ import { useEffect, useState, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Article } from "@/lib/types";
 import { ArticleFormModal } from "@/components/articles/ArticleFormModal";
-import { Plus, Search, Loader2, Shirt, Pencil } from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
+import { Plus, Search, Loader2, Shirt, Pencil, Trash2 } from "lucide-react";
 
 export default function ArticlesPage() {
   const supabase = createClient();
+  const { profile } = useAuth();
+  const isAdmin = profile?.role === "admin";
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [editing, setEditing] = useState<Article | null>(null);
+  const [deleting, setDeleting] = useState<Article | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleteBusy, setDeleteBusy] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -33,10 +39,28 @@ export default function ArticlesPage() {
     return articles.filter((a) => a.name.toLowerCase().includes(q));
   }, [articles, query]);
 
+  const confirmDelete = async () => {
+    if (!deleting) return;
+    setDeleteBusy(true);
+    setDeleteError(null);
+    const { error } = await supabase.from("articles").delete().eq("id", deleting.id);
+    setDeleteBusy(false);
+    if (error) {
+      setDeleteError(
+        error.code === "23503"
+          ? "Yeh article kisi order ya wapsi mein istemal ho chuka hai, is liye delete nahi ho sakta."
+          : error.message
+      );
+      return;
+    }
+    setArticles((prev) => prev.filter((a) => a.id !== deleting.id));
+    setDeleting(null);
+  };
+
   return (
     <div className="relative min-h-[calc(100vh-8rem)]">
-      <div className="sticky top-[57px] z-20 bg-cream px-4 pt-3 pb-2">
-        <div className="flex items-center gap-2 bg-white border border-gold/30 rounded-xl px-3 py-2 shadow-sm">
+      <div className="sticky top-[57px] z-20 bg-cream px-4 sm:px-6 lg:px-10 pt-3 pb-2">
+        <div className="flex items-center gap-2 bg-white border border-gold/30 rounded-xl px-3 py-2 shadow-sm max-w-xl">
           <Search size={18} className="text-maroon/50" />
           <input
             value={query}
@@ -57,9 +81,12 @@ export default function ArticlesPage() {
           {!query && <p className="text-xs mt-1">Neeche + button se naya article shamil karein.</p>}
         </div>
       ) : (
-        <ul className="divide-y divide-gold/15 px-1">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 px-4 sm:px-6 lg:px-10 py-2">
           {filtered.map((a) => (
-            <li key={a.id} className="flex items-center gap-3 px-3 py-3">
+            <li
+              key={a.id}
+              className="flex items-center gap-3 px-3 py-3 bg-white border border-gold/20 rounded-xl shadow-sm"
+            >
               {a.photo_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -77,10 +104,23 @@ export default function ArticlesPage() {
               </div>
               <button
                 onClick={() => setEditing(a)}
-                className="p-2 rounded-full text-maroon/60 hover:bg-maroon-50"
+                className="p-2 rounded-full text-maroon/60 hover:bg-maroon-50 flex-shrink-0"
+                title="Edit"
               >
                 <Pencil size={16} />
               </button>
+              {isAdmin && (
+                <button
+                  onClick={() => {
+                    setDeleteError(null);
+                    setDeleting(a);
+                  }}
+                  className="p-2 rounded-full text-red-500/70 hover:bg-red-50 flex-shrink-0"
+                  title="Delete"
+                >
+                  <Trash2 size={16} />
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -88,7 +128,7 @@ export default function ArticlesPage() {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="fab bg-maroon hover:bg-maroon-dark text-white w-14 h-14"
+        className="fab bg-maroon hover:bg-maroon-dark text-white w-14 h-14 bottom-[5.5rem] right-5"
         title="Naya Article"
       >
         <Plus size={26} />
@@ -113,6 +153,33 @@ export default function ArticlesPage() {
             setEditing(null);
           }}
         />
+      )}
+
+      {deleting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-cream rounded-2xl shadow-2xl max-w-sm w-full p-5 space-y-3">
+            <h3 className="font-semibold text-maroon-dark">Article Delete Karein?</h3>
+            <p className="text-sm text-ink/70">
+              &quot;{deleting.name}&quot; hamesha ke liye delete ho jayega. Yeh wapis nahi ho sakta.
+            </p>
+            {deleteError && <p className="text-red-600 text-xs font-medium">{deleteError}</p>}
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setDeleting(null)}
+                className="flex-1 border border-gold/40 rounded-xl py-2.5 text-sm font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={deleteBusy}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-xl py-2.5 text-sm font-medium disabled:opacity-60"
+              >
+                {deleteBusy ? "Delete ho raha hai..." : "Delete Karein"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

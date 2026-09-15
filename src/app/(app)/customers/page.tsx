@@ -41,8 +41,8 @@ export default function CustomersPage() {
 
   return (
     <div className="relative min-h-[calc(100vh-8rem)]">
-      <div className="sticky top-[57px] z-20 bg-cream px-4 pt-3 pb-2">
-        <div className="flex items-center gap-2 bg-white border border-gold/30 rounded-xl px-3 py-2 shadow-sm">
+      <div className="sticky top-[57px] z-20 bg-cream px-4 sm:px-6 lg:px-10 pt-3 pb-2">
+        <div className="flex items-center gap-2 bg-white border border-gold/30 rounded-xl px-3 py-2 shadow-sm max-w-xl">
           <Search size={18} className="text-maroon/50" />
           <input
             value={query}
@@ -60,24 +60,24 @@ export default function CustomersPage() {
       ) : filtered.length === 0 ? (
         <EmptyState hasQuery={!!query} />
       ) : (
-        <ul className="divide-y divide-gold/15 px-1">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 px-4 sm:px-6 lg:px-10 py-2">
           {filtered.map((c) => (
             <li key={c.id}>
               <Link
                 href={`/customers/${c.id}`}
-                className="flex items-center gap-3 px-3 py-3 hover:bg-maroon-50 active:bg-maroon-50 transition-colors rounded-xl"
+                className="flex items-center gap-3 px-3 py-3 bg-white border border-gold/20 hover:border-gold/50 hover:bg-maroon-50 active:bg-maroon-50 transition-colors rounded-xl shadow-sm"
               >
                 <Avatar name={c.name} photoUrl={c.photo_url} size={52} />
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-ink truncate">{c.name}</p>
                   <div className="flex items-center gap-3 text-xs text-ink/50 mt-0.5">
                     {c.phone && (
-                      <span className="flex items-center gap-1">
+                      <span className="flex items-center gap-1 truncate">
                         <Phone size={11} /> {c.phone}
                       </span>
                     )}
                     {c.factory_code && (
-                      <span className="flex items-center gap-1">
+                      <span className="flex items-center gap-1 truncate">
                         <Hash size={11} /> {c.factory_code}
                       </span>
                     )}
@@ -91,7 +91,7 @@ export default function CustomersPage() {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="fab bg-maroon hover:bg-maroon-dark text-white w-14 h-14"
+        className="fab bg-maroon hover:bg-maroon-dark text-white w-14 h-14 bottom-[5.5rem] right-5"
         title="Naya Grahak"
       >
         <Plus size={26} />

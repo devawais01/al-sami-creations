@@ -123,7 +123,7 @@ export default function CustomerOrdersPage() {
   return (
     <div className="relative min-h-[calc(100vh-4rem)]">
       <header className="sticky top-0 z-20 bg-maroon text-white shadow-md">
-        <div className="flex items-center gap-3 px-3 py-3">
+        <div className="flex items-center gap-3 px-3 sm:px-6 lg:px-10 py-3">
           <button onClick={() => router.push("/customers")} className="p-1.5 rounded-full hover:bg-white/10">
             <ArrowLeft size={20} />
           </button>
@@ -140,7 +140,7 @@ export default function CustomerOrdersPage() {
           </Link>
         </div>
 
-        <div className="flex px-2 gap-1 overflow-x-auto pb-1">
+        <div className="flex px-2 sm:px-6 lg:px-10 gap-1 overflow-x-auto pb-1">
           {TABS.map((t) => (
             <button
               key={t.value}
@@ -156,43 +156,46 @@ export default function CustomerOrdersPage() {
         </div>
       </header>
 
-      <div className="px-3 py-3 space-y-3">
+      <div className="px-3 sm:px-6 lg:px-10 py-3">
         {tab === "history" ? (
           historyEvents.length === 0 ? (
             <EmptyTab text="Abhi tak koi history nahi hai." />
           ) : (
-            <div className="bg-white border border-gold/25 rounded-2xl p-4 space-y-4">
+            <div className="bg-white border border-gold/25 rounded-2xl p-4 space-y-4 max-w-2xl">
               {historyEvents.map((e) => e.node)}
             </div>
           )
         ) : filteredOrders.length === 0 ? (
           <EmptyTab text={`${TABS.find((t) => t.value === tab)?.label} mein koi order nahi hai.`} />
         ) : (
-          filteredOrders.map((o) => (
-            <OrderCard
-              key={o.id}
-              order={o}
-              onEdit={() => setEditingOrder(o)}
-              onClose={() => setClosingOrder(o)}
-            />
-          ))
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {filteredOrders.map((o) => (
+              <OrderCard
+                key={o.id}
+                order={o}
+                onEdit={() => setEditingOrder(o)}
+                onClose={() => setClosingOrder(o)}
+              />
+            ))}
+          </div>
         )}
       </div>
 
-      <button
-        onClick={() => setShowReturn(true)}
-        className="fab bg-white border border-gold/50 text-maroon-dark w-12 h-12 bottom-[9.5rem] right-5"
-        title="Return"
-      >
-        <Undo2 size={20} />
-      </button>
-      <button
-        onClick={() => setShowAdd(true)}
-        className="fab bg-maroon hover:bg-maroon-dark text-white w-14 h-14"
-        title="Naya Order"
-      >
-        <Plus size={26} />
-      </button>
+      <div className="fixed z-20 bottom-[5.5rem] right-5 flex items-center gap-3">
+        <button
+          onClick={() => setShowReturn(true)}
+          className="flex items-center gap-1.5 bg-white border border-gold/50 text-maroon-dark rounded-full h-12 px-4 shadow-[0_6px_18px_rgba(0,0,0,0.18)] active:scale-95 transition-transform font-medium text-sm"
+        >
+          <Undo2 size={18} /> Return
+        </button>
+        <button
+          onClick={() => setShowAdd(true)}
+          className="flex items-center justify-center bg-maroon hover:bg-maroon-dark text-white rounded-full w-14 h-14 shadow-[0_6px_18px_rgba(0,0,0,0.25)] active:scale-95 transition-transform"
+          title="Naya Order"
+        >
+          <Plus size={26} />
+        </button>
+      </div>
 
       {showAdd && (
         <AddOrderModal

@@ -199,10 +199,13 @@ create trigger trg_handle_new_user
 
 -- ------------------------------------------------------------
 -- Row Level Security
--- Every logged-in user (admin or staff) has identical data access,
--- per your requirements — the only admin-only action (creating new
--- staff logins) is handled through a server route with the service
--- role key, not through these policies.
+-- Every logged-in user (admin or staff) has identical read/write
+-- access, per your requirements. Two things are admin-only:
+--  1) creating new staff logins — handled through a server route
+--     with the service role key, not through these policies.
+--  2) deleting customers or articles — enforced below at the
+--     database level (not just hidden in the UI), so it can't be
+--     bypassed even by calling the API directly.
 -- ------------------------------------------------------------
 alter table public.profiles enable row level security;
 alter table public.customers enable row level security;
@@ -211,17 +214,44 @@ alter table public.orders enable row level security;
 alter table public.order_items enable row level security;
 alter table public.returns enable row level security;
 
+create or replace function public.is_admin()
+returns boolean as $$
+  select exists (
+    select 1 from public.profiles where id = auth.uid() and role = 'admin'
+  );
+$$ language sql stable security definer set search_path = public;
+
 drop policy if exists "profiles_select_authenticated" on public.profiles;
 create policy "profiles_select_authenticated" on public.profiles
   for select using (auth.role() = 'authenticated');
 
 drop policy if exists "customers_all_authenticated" on public.customers;
-create policy "customers_all_authenticated" on public.customers
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "customers_select_authenticated" on public.customers;
+create policy "customers_select_authenticated" on public.customers
+  for select using (auth.role() = 'authenticated');
+drop policy if exists "customers_insert_authenticated" on public.customers;
+create policy "customers_insert_authenticated" on public.customers
+  for insert with check (auth.role() = 'authenticated');
+drop policy if exists "customers_update_authenticated" on public.customers;
+create policy "customers_update_authenticated" on public.customers
+  for update using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "customers_delete_admin_only" on public.customers;
+create policy "customers_delete_admin_only" on public.customers
+  for delete using (public.is_admin());
 
 drop policy if exists "articles_all_authenticated" on public.articles;
-create policy "articles_all_authenticated" on public.articles
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "articles_select_authenticated" on public.articles;
+create policy "articles_select_authenticated" on public.articles
+  for select using (auth.role() = 'authenticated');
+drop policy if exists "articles_insert_authenticated" on public.articles;
+create policy "articles_insert_authenticated" on public.articles
+  for insert with check (auth.role() = 'authenticated');
+drop policy if exists "articles_update_authenticated" on public.articles;
+create policy "articles_update_authenticated" on public.articles
+  for update using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "articles_delete_admin_only" on public.articles;
+create policy "articles_delete_admin_only" on public.articles
+  for delete using (public.is_admin());
 
 drop policy if exists "orders_all_authenticated" on public.orders;
 create policy "orders_all_authenticated" on public.orders

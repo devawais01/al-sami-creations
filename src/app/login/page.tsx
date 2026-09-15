@@ -38,10 +38,15 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-maroon-dark via-maroon to-maroon-light px-6 py-10">
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
-          <div className="bg-white/95 rounded-full p-4 shadow-xl ring-4 ring-gold/40">
-            <Image src="/logo.png" alt="Al-Sami Creation's" width={72} height={72} className="rounded-full" />
-          </div>
-          <h1 className="mt-4 font-serif text-2xl font-semibold text-white tracking-wide">
+          <Image
+            src="/logo.png"
+            alt="Al-Sami Creation's"
+            width={160}
+            height={160}
+            className="drop-shadow-[0_4px_16px_rgba(0,0,0,0.25)] w-36 h-auto sm:w-40"
+            priority
+          />
+          <h1 className="mt-1 font-serif text-2xl font-semibold text-white tracking-wide">
             Al-Sami Creation&apos;s
           </h1>
           <p className="text-gold-light text-sm mt-1">Order &amp; Customer Management</p>
