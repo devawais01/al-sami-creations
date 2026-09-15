@@ -35,33 +35,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-maroon-dark via-maroon to-maroon-light px-6 py-10">
-      <div className="w-full max-w-sm">
-        <div className="flex flex-col items-center mb-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-maroon-dark px-6 py-12">
+      <div className="w-full max-w-[380px]">
+        <div className="flex flex-col items-center mb-10">
           <Image
             src="/logo.png"
             alt="Al-Sami Creation's"
-            width={160}
-            height={160}
-            className="drop-shadow-[0_4px_16px_rgba(0,0,0,0.25)] w-36 h-auto sm:w-40"
+            width={180}
+            height={180}
+            className="w-40 h-auto sm:w-44"
             priority
           />
-          <h1 className="mt-1 font-serif text-2xl font-semibold text-white tracking-wide">
+          <h1 className="mt-3 font-serif text-2xl font-semibold text-white tracking-wide">
             Al-Sami Creation&apos;s
           </h1>
-          <p className="text-gold-light text-sm mt-1">Order &amp; Customer Management</p>
+          <p className="text-gold-light/90 text-xs mt-1 tracking-wide uppercase">
+            Order &amp; Customer Management
+          </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-cream rounded-2xl shadow-2xl p-6 space-y-4 border border-gold/30"
-        >
-          <h2 className="text-lg font-semibold text-maroon-dark mb-1">Login Karein</h2>
-
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-7 space-y-5">
           <div>
-            <label className="text-xs font-medium text-ink/60 mb-1 block">Email</label>
-            <div className="flex items-center gap-2 border border-gold/40 rounded-xl px-3 py-2.5 bg-white focus-within:ring-2 focus-within:ring-maroon/40">
-              <Mail size={18} className="text-maroon/60" />
+            <label className="text-xs font-medium text-ink/50 mb-1.5 block">Email</label>
+            <div className="flex items-center gap-2.5 border border-ink/10 rounded-xl px-3.5 py-3 bg-cream/60 focus-within:border-maroon focus-within:bg-white transition-colors">
+              <Mail size={17} className="text-maroon/50 flex-shrink-0" />
               <input
                 type="email"
                 required
@@ -74,9 +71,9 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-ink/60 mb-1 block">Password</label>
-            <div className="flex items-center gap-2 border border-gold/40 rounded-xl px-3 py-2.5 bg-white focus-within:ring-2 focus-within:ring-maroon/40">
-              <Lock size={18} className="text-maroon/60" />
+            <label className="text-xs font-medium text-ink/50 mb-1.5 block">Password</label>
+            <div className="flex items-center gap-2.5 border border-ink/10 rounded-xl px-3.5 py-3 bg-cream/60 focus-within:border-maroon focus-within:bg-white transition-colors">
+              <Lock size={17} className="text-maroon/50 flex-shrink-0" />
               <input
                 type="password"
                 required
@@ -93,14 +90,14 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full flex items-center justify-center gap-2 bg-maroon hover:bg-maroon-dark text-white font-medium rounded-xl py-3 transition-colors disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-2 bg-maroon hover:bg-maroon-dark text-white font-medium rounded-xl py-3.5 transition-colors disabled:opacity-60"
           >
             {submitting && <Loader2 size={18} className="animate-spin" />}
             Login
           </button>
         </form>
 
-        <p className="text-center text-gold-light/80 text-xs mt-6">
+        <p className="text-center text-white/50 text-xs mt-7">
           Sirf authorized staff ke liye. Naya account admin banata hai.
         </p>
       </div>
