@@ -254,8 +254,18 @@ create policy "articles_delete_admin_only" on public.articles
   for delete using (public.is_admin());
 
 drop policy if exists "orders_all_authenticated" on public.orders;
-create policy "orders_all_authenticated" on public.orders
-  for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "orders_select_authenticated" on public.orders;
+create policy "orders_select_authenticated" on public.orders
+  for select using (auth.role() = 'authenticated');
+drop policy if exists "orders_insert_authenticated" on public.orders;
+create policy "orders_insert_authenticated" on public.orders
+  for insert with check (auth.role() = 'authenticated');
+drop policy if exists "orders_update_authenticated" on public.orders;
+create policy "orders_update_authenticated" on public.orders
+  for update using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+drop policy if exists "orders_delete_admin_only" on public.orders;
+create policy "orders_delete_admin_only" on public.orders
+  for delete using (public.is_admin());
 
 drop policy if exists "order_items_all_authenticated" on public.order_items;
 create policy "order_items_all_authenticated" on public.order_items

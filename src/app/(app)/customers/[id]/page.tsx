@@ -11,6 +11,7 @@ import { AddOrderModal } from "@/components/orders/AddOrderModal";
 import { CloseOrderModal } from "@/components/orders/CloseOrderModal";
 import { EditOrderModal } from "@/components/orders/EditOrderModal";
 import { ReturnModal } from "@/components/orders/ReturnModal";
+import { useAuth } from "@/components/AuthProvider";
 import { formatDateTime, cn } from "@/lib/utils";
 import { ArrowLeft, Plus, Undo2, Loader2, Phone, PackageOpen } from "lucide-react";
 
@@ -28,6 +29,8 @@ export default function CustomerOrdersPage() {
   const customerId = params.id;
   const router = useRouter();
   const supabase = createClient();
+  const { profile } = useAuth();
+  const isAdmin = profile?.role === "admin";
 
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
@@ -39,6 +42,9 @@ export default function CustomerOrdersPage() {
   const [showReturn, setShowReturn] = useState(false);
   const [closingOrder, setClosingOrder] = useState<OrderWithItems | null>(null);
   const [editingOrder, setEditingOrder] = useState<OrderWithItems | null>(null);
+  const [deletingOrder, setDeletingOrder] = useState<OrderWithItems | null>(null);
+  const [deleteBusy, setDeleteBusy] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -175,6 +181,11 @@ export default function CustomerOrdersPage() {
                 order={o}
                 onEdit={() => setEditingOrder(o)}
                 onClose={() => setClosingOrder(o)}
+                onDelete={() => {
+                  setDeleteError(null);
+                  setDeletingOrder(o);
+                }}
+                canDelete={isAdmin}
               />
             ))}
           </div>
@@ -241,6 +252,45 @@ export default function CustomerOrdersPage() {
             load();
           }}
         />
+      )}
+
+      {deletingOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-cream rounded-2xl shadow-2xl max-w-sm w-full p-5 space-y-3">
+            <h3 className="font-semibold text-maroon-dark">Order #{deletingOrder.order_number} Delete Karein?</h3>
+            <p className="text-sm text-ink/70">
+              Yeh order hamesha ke liye delete ho jayega aur Hisaab ke numbers se bhi hat jayega. Yeh wapis
+              nahi ho sakta.
+            </p>
+            {deleteError && <p className="text-red-600 text-xs font-medium">{deleteError}</p>}
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setDeletingOrder(null)}
+                className="flex-1 border border-gold/40 rounded-xl py-2.5 text-sm font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  setDeleteBusy(true);
+                  setDeleteError(null);
+                  const { error } = await supabase.from("orders").delete().eq("id", deletingOrder.id);
+                  setDeleteBusy(false);
+                  if (error) {
+                    setDeleteError(error.message);
+                    return;
+                  }
+                  setDeletingOrder(null);
+                  load();
+                }}
+                disabled={deleteBusy}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-xl py-2.5 text-sm font-medium disabled:opacity-60"
+              >
+                {deleteBusy ? "Delete ho raha hai..." : "Delete Karein"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -4,16 +4,20 @@ import { useState } from "react";
 import type { OrderWithItems } from "@/lib/types";
 import { SIZES } from "@/lib/types";
 import { formatDateTime, groupItemsByArticle, orderGrandTotal, STATUS_LABEL, STATUS_COLOR } from "@/lib/utils";
-import { Pencil, CheckCircle2, ChevronDown, ChevronUp, Shirt } from "lucide-react";
+import { Pencil, CheckCircle2, ChevronDown, ChevronUp, Shirt, Trash2 } from "lucide-react";
 
 export function OrderCard({
   order,
   onEdit,
   onClose,
+  onDelete,
+  canDelete,
 }: {
   order: OrderWithItems;
   onEdit: () => void;
   onClose: () => void;
+  onDelete: () => void;
+  canDelete: boolean;
 }) {
   const [expanded, setExpanded] = useState(true);
   const groups = groupItemsByArticle(order.order_items);
@@ -84,26 +88,36 @@ export function OrderCard({
             </div>
           ))}
 
-          <div className="flex items-center justify-between pt-1">
+          <div className="flex items-center justify-between pt-1 flex-wrap gap-2">
             <span className="text-sm font-semibold text-maroon-dark">
               Total: {totals.delivered}/{totals.ordered} piece
             </span>
-            {order.status !== "closed" && (
-              <div className="flex gap-2">
+            <div className="flex gap-2">
+              {order.status !== "closed" && (
+                <>
+                  <button
+                    onClick={onEdit}
+                    className="flex items-center gap-1 text-xs font-medium border border-gold/40 text-maroon-dark rounded-lg px-2.5 py-1.5 hover:bg-maroon-50"
+                  >
+                    <Pencil size={12} /> Edit
+                  </button>
+                  <button
+                    onClick={onClose}
+                    className="flex items-center gap-1 text-xs font-medium bg-maroon text-white rounded-lg px-2.5 py-1.5 hover:bg-maroon-dark"
+                  >
+                    <CheckCircle2 size={12} /> Close
+                  </button>
+                </>
+              )}
+              {canDelete && (
                 <button
-                  onClick={onEdit}
-                  className="flex items-center gap-1 text-xs font-medium border border-gold/40 text-maroon-dark rounded-lg px-2.5 py-1.5 hover:bg-maroon-50"
+                  onClick={onDelete}
+                  className="flex items-center gap-1 text-xs font-medium border border-red-300 text-red-600 rounded-lg px-2.5 py-1.5 hover:bg-red-50"
                 >
-                  <Pencil size={12} /> Edit
+                  <Trash2 size={12} /> Delete
                 </button>
-                <button
-                  onClick={onClose}
-                  className="flex items-center gap-1 text-xs font-medium bg-maroon text-white rounded-lg px-2.5 py-1.5 hover:bg-maroon-dark"
-                >
-                  <CheckCircle2 size={12} /> Close
-                </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       )}
