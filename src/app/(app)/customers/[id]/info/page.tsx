@@ -44,7 +44,7 @@ export default function CustomerInfoPage() {
 
   return (
     <div>
-      <header className="sticky top-0 z-20 bg-maroon text-white shadow-md flex items-center gap-3 px-3 sm:px-6 lg:px-10 py-3">
+      <header className="sticky top-0 z-20 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)] flex items-center gap-3 px-3 sm:px-6 lg:px-10 py-3">
         <button onClick={() => router.back()} className="p-1.5 rounded-full hover:bg-white/10">
           <ArrowLeft size={20} />
         </button>

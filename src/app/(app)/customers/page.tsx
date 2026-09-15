@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Customer } from "@/lib/types";
 import { Avatar } from "@/components/Avatar";
 import { CustomerFormModal } from "@/components/customers/CustomerFormModal";
-import { Plus, Search, Phone, Hash, Loader2 } from "lucide-react";
+import { Plus, Search, Phone, Hash, Loader2, ChevronRight } from "lucide-react";
 
 export default function CustomersPage() {
   const supabase = createClient();
@@ -41,9 +41,17 @@ export default function CustomersPage() {
 
   return (
     <div className="relative min-h-[calc(100vh-8rem)]">
-      <div className="sticky top-[57px] z-20 bg-cream px-4 sm:px-6 lg:px-10 pt-3 pb-2">
-        <div className="flex items-center gap-2 bg-white border border-gold/30 rounded-xl px-3 py-2 shadow-sm max-w-xl">
-          <Search size={18} className="text-maroon/50" />
+      <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 lg:px-10 pt-4 pb-3">
+        <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+          <div>
+            <h1 className="font-serif text-xl font-semibold text-maroon-dark">Grahak</h1>
+            <p className="text-xs text-ink/45 mt-0.5">
+              {customers.length} {customers.length === 1 ? "grahak" : "grahak"} total
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2.5 bg-white border border-gold/25 rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(122,18,55,0.06)] max-w-xl focus-within:border-gold/60 focus-within:shadow-[0_4px_16px_rgba(122,18,55,0.1)] transition-all">
+          <Search size={18} className="text-maroon/50 flex-shrink-0" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -60,29 +68,33 @@ export default function CustomersPage() {
       ) : filtered.length === 0 ? (
         <EmptyState hasQuery={!!query} />
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 px-4 sm:px-6 lg:px-10 py-2">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 px-4 sm:px-6 lg:px-10 py-3">
           {filtered.map((c) => (
             <li key={c.id}>
               <Link
                 href={`/customers/${c.id}`}
-                className="flex items-center gap-3 px-3 py-3 bg-white border border-gold/20 hover:border-gold/50 hover:bg-maroon-50 active:bg-maroon-50 transition-colors rounded-xl shadow-sm"
+                className="card group flex items-center gap-3.5 p-4"
               >
-                <Avatar name={c.name} photoUrl={c.photo_url} size={52} />
+                <Avatar name={c.name} photoUrl={c.photo_url} size={54} />
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-ink truncate">{c.name}</p>
-                  <div className="flex items-center gap-3 text-xs text-ink/50 mt-0.5">
+                  <p className="font-semibold text-ink truncate">{c.name}</p>
+                  <div className="flex items-center gap-3 text-xs text-ink/50 mt-1">
                     {c.phone && (
                       <span className="flex items-center gap-1 truncate">
-                        <Phone size={11} /> {c.phone}
+                        <Phone size={11} className="text-maroon/40" /> {c.phone}
                       </span>
                     )}
                     {c.factory_code && (
                       <span className="flex items-center gap-1 truncate">
-                        <Hash size={11} /> {c.factory_code}
+                        <Hash size={11} className="text-maroon/40" /> {c.factory_code}
                       </span>
                     )}
                   </div>
                 </div>
+                <ChevronRight
+                  size={18}
+                  className="text-gold-dark/40 group-hover:text-maroon flex-shrink-0 transition-colors"
+                />
               </Link>
             </li>
           ))}
@@ -91,7 +103,7 @@ export default function CustomersPage() {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="fab bg-maroon hover:bg-maroon-dark text-white w-14 h-14 bottom-[5.5rem] right-5"
+        className="fab text-white w-14 h-14 bottom-[5.5rem] right-5"
         title="Naya Grahak"
       >
         <Plus size={26} />

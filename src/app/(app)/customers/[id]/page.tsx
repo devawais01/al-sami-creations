@@ -128,9 +128,9 @@ export default function CustomerOrdersPage() {
 
   return (
     <div className="relative min-h-[calc(100vh-4rem)]">
-      <header className="sticky top-0 z-20 bg-maroon text-white shadow-md">
+      <header className="sticky top-0 z-20 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)]">
         <div className="flex items-center gap-3 px-3 sm:px-6 lg:px-10 py-3">
-          <button onClick={() => router.push("/customers")} className="p-1.5 rounded-full hover:bg-white/10">
+          <button onClick={() => router.push("/customers")} className="p-1.5 rounded-full hover:bg-white/15 transition-colors">
             <ArrowLeft size={20} />
           </button>
           <Link href={`/customers/${customerId}/info`} className="flex items-center gap-2.5 flex-1 min-w-0">
@@ -146,20 +146,23 @@ export default function CustomerOrdersPage() {
           </Link>
         </div>
 
-        <div className="flex px-2 sm:px-6 lg:px-10 gap-1 overflow-x-auto pb-1">
+        <div className="flex px-2 sm:px-6 lg:px-10 gap-1.5 overflow-x-auto pb-2">
           {TABS.map((t) => (
             <button
               key={t.value}
               onClick={() => setTab(t.value)}
               className={cn(
                 "px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors",
-                tab === t.value ? "bg-gold text-maroon-dark" : "bg-white/10 text-white/80"
+                tab === t.value
+                  ? "bg-gradient-to-r from-gold-light to-gold text-maroon-dark shadow-sm"
+                  : "bg-white/10 text-white/80 hover:bg-white/15"
               )}
             >
               {t.label}
             </button>
           ))}
         </div>
+        <div className="h-[3px] w-full bg-gradient-to-r from-gold-dark via-gold to-gold-light opacity-80" />
       </header>
 
       <div className="px-3 sm:px-6 lg:px-10 py-3 pb-24">
@@ -192,17 +195,17 @@ export default function CustomerOrdersPage() {
         )}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-gold/30 shadow-[0_-4px_16px_rgba(0,0,0,0.1)] safe-bottom">
-        <div className="flex gap-3 px-3 sm:px-6 lg:px-10 py-3 max-w-xl mx-auto sm:mx-0">
+      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur border-t border-gold/25 shadow-[0_-4px_18px_rgba(122,18,55,0.1)] safe-bottom">
+        <div className="flex gap-3 px-4 sm:px-6 lg:px-10 py-3 max-w-md mx-auto">
           <button
             onClick={() => setShowReturn(true)}
-            className="flex-1 flex items-center justify-center gap-2 bg-white border-2 border-maroon text-maroon-dark rounded-xl h-12 font-semibold text-sm active:scale-[0.98] transition-transform"
+            className="btn-outline-gold flex-1 flex items-center justify-center gap-2 rounded-xl h-12 font-semibold text-sm"
           >
             <Undo2 size={18} /> Return
           </button>
           <button
             onClick={() => setShowAdd(true)}
-            className="flex-1 flex items-center justify-center gap-2 bg-maroon hover:bg-maroon-dark text-white rounded-xl h-12 font-semibold text-sm active:scale-[0.98] transition-transform"
+            className="btn-primary flex-1 flex items-center justify-center gap-2 rounded-xl h-12 font-semibold text-sm"
           >
             <Plus size={18} /> Add Order
           </button>

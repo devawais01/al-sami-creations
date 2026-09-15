@@ -24,7 +24,7 @@ export function OrderCard({
   const totals = orderGrandTotal(order.order_items);
 
   return (
-    <div className="bg-white border border-gold/25 rounded-2xl shadow-sm overflow-hidden">
+    <div className="card overflow-hidden">
       <button
         onClick={() => setExpanded((v) => !v)}
         className="w-full flex items-center justify-between px-4 py-3"
@@ -97,13 +97,13 @@ export function OrderCard({
                 <>
                   <button
                     onClick={onEdit}
-                    className="flex items-center gap-1 text-xs font-medium border border-gold/40 text-maroon-dark rounded-lg px-2.5 py-1.5 hover:bg-maroon-50"
+                    className="btn-outline-gold flex items-center gap-1 text-xs font-medium rounded-lg px-2.5 py-1.5"
                   >
                     <Pencil size={12} /> Edit
                   </button>
                   <button
                     onClick={onClose}
-                    className="flex items-center gap-1 text-xs font-medium bg-maroon text-white rounded-lg px-2.5 py-1.5 hover:bg-maroon-dark"
+                    className="btn-primary flex items-center gap-1 text-xs font-medium rounded-lg px-2.5 py-1.5"
                   >
                     <CheckCircle2 size={12} /> Close
                   </button>

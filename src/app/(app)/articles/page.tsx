@@ -59,9 +59,15 @@ export default function ArticlesPage() {
 
   return (
     <div className="relative min-h-[calc(100vh-8rem)]">
-      <div className="sticky top-[57px] z-20 bg-cream px-4 sm:px-6 lg:px-10 pt-3 pb-2">
-        <div className="flex items-center gap-2 bg-white border border-gold/30 rounded-xl px-3 py-2 shadow-sm max-w-xl">
-          <Search size={18} className="text-maroon/50" />
+      <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 lg:px-10 pt-4 pb-3">
+        <div className="mb-3">
+          <h1 className="font-serif text-xl font-semibold text-maroon-dark">Kapray</h1>
+          <p className="text-xs text-ink/45 mt-0.5">
+            {articles.length} {articles.length === 1 ? "article" : "articles"} total
+          </p>
+        </div>
+        <div className="flex items-center gap-2.5 bg-white border border-gold/25 rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(122,18,55,0.06)] max-w-xl focus-within:border-gold/60 focus-within:shadow-[0_4px_16px_rgba(122,18,55,0.1)] transition-all">
+          <Search size={18} className="text-maroon/50 flex-shrink-0" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -81,12 +87,9 @@ export default function ArticlesPage() {
           {!query && <p className="text-xs mt-1">Neeche + button se naya article shamil karein.</p>}
         </div>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 px-4 sm:px-6 lg:px-10 py-2">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 px-4 sm:px-6 lg:px-10 py-3">
           {filtered.map((a) => (
-            <li
-              key={a.id}
-              className="flex items-center gap-3 px-3 py-3 bg-white border border-gold/20 rounded-xl shadow-sm"
-            >
+            <li key={a.id} className="card flex items-center gap-3.5 p-4">
               {a.photo_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -100,11 +103,11 @@ export default function ArticlesPage() {
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-ink truncate">{a.name}</p>
+                <p className="font-semibold text-ink truncate">{a.name}</p>
               </div>
               <button
                 onClick={() => setEditing(a)}
-                className="p-2 rounded-full text-maroon/60 hover:bg-maroon-50 flex-shrink-0"
+                className="p-2 rounded-full text-maroon/60 hover:bg-maroon-50 flex-shrink-0 transition-colors"
                 title="Edit"
               >
                 <Pencil size={16} />
@@ -115,7 +118,7 @@ export default function ArticlesPage() {
                     setDeleteError(null);
                     setDeleting(a);
                   }}
-                  className="p-2 rounded-full text-red-500/70 hover:bg-red-50 flex-shrink-0"
+                  className="p-2 rounded-full text-red-500/70 hover:bg-red-50 flex-shrink-0 transition-colors"
                   title="Delete"
                 >
                   <Trash2 size={16} />
@@ -128,7 +131,7 @@ export default function ArticlesPage() {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="fab bg-maroon hover:bg-maroon-dark text-white w-14 h-14 bottom-[5.5rem] right-5"
+        className="fab text-white w-14 h-14 bottom-[5.5rem] right-5"
         title="Naya Article"
       >
         <Plus size={26} />

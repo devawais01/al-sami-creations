@@ -26,7 +26,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cream">
+      <div className="min-h-screen flex items-center justify-center bg-page-gradient">
         <Loader2 className="animate-spin text-maroon" size={28} />
       </div>
     );
@@ -41,18 +41,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-page-gradient">
       {isRoot && (
-        <header className="sticky top-0 z-30 bg-maroon text-white shadow-md">
+        <header className="sticky top-0 z-30 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)]">
           <div className="flex items-center justify-between px-4 sm:px-6 lg:px-10 py-3 w-full">
             <div className="flex items-center gap-2.5">
-              <Image
-                src="/logo.png"
-                alt="Al-Sami"
-                width={34}
-                height={34}
-                className="rounded-full bg-white/90 p-0.5"
-              />
+              <div className="w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow-sm flex-shrink-0 overflow-hidden">
+                <Image
+                  src="/logo-transparent.png"
+                  alt="Al-Sami"
+                  width={30}
+                  height={30}
+                  className="object-contain"
+                />
+              </div>
               <span className="font-serif font-semibold text-lg tracking-wide">Al-Sami Creation&apos;s</span>
             </div>
             <div className="flex items-center gap-1">
@@ -60,7 +62,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <Link
                   href="/users"
                   title="Users"
-                  className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                  className="p-2 rounded-full hover:bg-white/15 active:bg-white/20 transition-colors"
                 >
                   <UserCog size={20} />
                 </Link>
@@ -69,19 +71,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 onClick={handleSignOut}
                 disabled={signingOut}
                 title="Logout"
-                className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                className="p-2 rounded-full hover:bg-white/15 active:bg-white/20 transition-colors"
               >
                 <LogOut size={20} />
               </button>
             </div>
           </div>
+          <div className="h-[3px] w-full bg-gradient-to-r from-gold-dark via-gold to-gold-light opacity-80" />
         </header>
       )}
 
       <main className="flex-1 w-full pb-20">{children}</main>
 
       {isRoot && (
-        <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gold/30 safe-bottom shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
+        <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur border-t border-gold/25 safe-bottom shadow-[0_-4px_18px_rgba(122,18,55,0.08)]">
           <div className="flex w-full sm:max-w-md sm:mx-auto">
             {NAV.map(({ href, label, icon: Icon }) => {
               const active = pathname === href;
@@ -90,10 +93,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   key={href}
                   href={href}
                   className={cn(
-                    "flex-1 flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium transition-colors",
-                    active ? "text-maroon" : "text-ink/40"
+                    "relative flex-1 flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium transition-colors",
+                    active ? "text-maroon-dark" : "text-ink/40"
                   )}
                 >
+                  {active && (
+                    <span className="absolute top-0 h-[3px] w-8 rounded-full bg-gradient-to-r from-gold-dark to-gold" />
+                  )}
                   <Icon size={22} strokeWidth={active ? 2.4 : 2} />
                   {label}
                 </Link>
