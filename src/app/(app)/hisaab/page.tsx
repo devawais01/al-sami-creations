@@ -212,7 +212,7 @@ export default function HisaabPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5 items-start">
             <InsightSection
               icon={TrendingUp}
-              title="Sab Se Zyada Mangi Jane Wali Dresses"
+              title="Sab Se Zyada Order Hone Wali Dress"
               emptyText="Is muddat mein koi order nahi mila."
               rows={topArticles.map((a) => ({ label: a.name, value: a.qty }))}
             />

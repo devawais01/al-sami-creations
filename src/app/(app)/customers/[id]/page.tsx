@@ -129,7 +129,7 @@ export default function CustomerOrdersPage() {
   return (
     <div className="relative min-h-[calc(100vh-4rem)]">
       <header className="sticky top-0 z-20 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)]">
-        <div className="flex items-center gap-3 px-3 sm:px-6 lg:px-10 py-3">
+        <div className="flex items-center gap-3 px-3 sm:px-6 py-3 lg:max-w-2xl lg:mx-auto">
           <button onClick={() => router.push("/customers")} className="p-1.5 rounded-full hover:bg-white/15 transition-colors">
             <ArrowLeft size={20} />
           </button>
@@ -146,7 +146,7 @@ export default function CustomerOrdersPage() {
           </Link>
         </div>
 
-        <div className="flex px-2 sm:px-6 lg:px-10 gap-1.5 overflow-x-auto pb-2">
+        <div className="flex px-2 sm:px-6 gap-1.5 overflow-x-auto pb-2 lg:max-w-2xl lg:mx-auto">
           {TABS.map((t) => (
             <button
               key={t.value}
@@ -165,19 +165,19 @@ export default function CustomerOrdersPage() {
         <div className="h-[3px] w-full bg-gradient-to-r from-gold-dark via-gold to-gold-light opacity-80" />
       </header>
 
-      <div className="px-3 sm:px-6 lg:px-10 py-3 pb-24">
+      <div className="px-3 sm:px-6 py-3 pb-24 lg:max-w-2xl lg:mx-auto">
         {tab === "history" ? (
           historyEvents.length === 0 ? (
             <EmptyTab text="Abhi tak koi history nahi hai." />
           ) : (
-            <div className="bg-white border border-gold/25 rounded-2xl p-4 space-y-4 max-w-2xl">
+            <div className="bg-white border border-gold/25 rounded-2xl p-4 space-y-4">
               {historyEvents.map((e) => e.node)}
             </div>
           )
         ) : filteredOrders.length === 0 ? (
           <EmptyTab text={`${TABS.find((t) => t.value === tab)?.label} mein koi order nahi hai.`} />
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div className="flex flex-col gap-3">
             {filteredOrders.map((o) => (
               <OrderCard
                 key={o.id}

@@ -76,7 +76,7 @@ export default function UsersPage() {
 
   return (
     <div>
-      <header className="sticky top-0 z-20 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)] flex items-center justify-between px-3 sm:px-6 lg:px-10 py-3">
+      <header className="sticky top-0 z-20 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)] flex items-center justify-between px-3 sm:px-6 py-3 lg:max-w-2xl lg:mx-auto">
         <div className="flex items-center gap-3">
           <button onClick={() => router.back()} className="p-1.5 rounded-full hover:bg-white/10">
             <ArrowLeft size={20} />
@@ -96,7 +96,7 @@ export default function UsersPage() {
           <Loader2 className="animate-spin text-maroon" size={26} />
         </div>
       ) : (
-        <ul className="divide-y divide-gold/15 px-2 sm:px-6 lg:px-10 py-2 max-w-2xl">
+        <ul className="divide-y divide-gold/15 px-2 sm:px-6 py-2 lg:max-w-2xl lg:mx-auto">
           {users.map((u) => (
             <li key={u.id} className="flex items-center gap-3 px-2 py-3">
               <div className="bg-maroon-50 rounded-full p-2">

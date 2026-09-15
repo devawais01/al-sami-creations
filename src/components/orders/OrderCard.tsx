@@ -19,7 +19,7 @@ export function OrderCard({
   onDelete: () => void;
   canDelete: boolean;
 }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const groups = groupItemsByArticle(order.order_items);
   const totals = orderGrandTotal(order.order_items);
 

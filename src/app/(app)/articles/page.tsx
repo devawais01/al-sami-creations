@@ -5,13 +5,18 @@ import { createClient } from "@/lib/supabase/client";
 import type { Article } from "@/lib/types";
 import { ArticleFormModal } from "@/components/articles/ArticleFormModal";
 import { useAuth } from "@/components/AuthProvider";
-import { Plus, Search, Loader2, Shirt, Pencil, Trash2 } from "lucide-react";
+import { Plus, Search, Loader2, Shirt, Pencil, Trash2, ShoppingBag, Undo2 } from "lucide-react";
+
+interface ArticleWithStats extends Article {
+  orderQty: number;
+  returnQty: number;
+}
 
 export default function ArticlesPage() {
   const supabase = createClient();
   const { profile } = useAuth();
   const isAdmin = profile?.role === "admin";
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<ArticleWithStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [showAdd, setShowAdd] = useState(false);
@@ -22,8 +27,29 @@ export default function ArticlesPage() {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("articles").select("*").order("name");
-    setArticles((data as Article[]) ?? []);
+    const [{ data: articleRows }, { data: itemRows }, { data: returnRows }] = await Promise.all([
+      supabase.from("articles").select("*").order("name"),
+      supabase.from("order_items").select("article_id, qty_ordered"),
+      supabase.from("returns").select("article_id, qty"),
+    ]);
+
+    const orderTotals = new Map<string, number>();
+    for (const row of itemRows ?? []) {
+      orderTotals.set(row.article_id, (orderTotals.get(row.article_id) ?? 0) + (row.qty_ordered ?? 0));
+    }
+    const returnTotals = new Map<string, number>();
+    for (const row of returnRows ?? []) {
+      returnTotals.set(row.article_id, (returnTotals.get(row.article_id) ?? 0) + (row.qty ?? 0));
+    }
+
+    const merged: ArticleWithStats[] = (articleRows as Article[] ?? []).map((a) => ({
+      ...a,
+      orderQty: orderTotals.get(a.id) ?? 0,
+      returnQty: returnTotals.get(a.id) ?? 0,
+    }));
+    merged.sort((a, b) => b.orderQty - a.orderQty || a.name.localeCompare(b.name));
+
+    setArticles(merged);
     setLoading(false);
   };
 
@@ -59,14 +85,14 @@ export default function ArticlesPage() {
 
   return (
     <div className="relative min-h-[calc(100vh-8rem)]">
-      <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 lg:px-10 pt-4 pb-3">
+      <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 pt-4 pb-3 lg:max-w-2xl lg:mx-auto">
         <div className="mb-3">
           <h1 className="font-serif text-xl font-semibold text-maroon-dark">Articles</h1>
           <p className="text-xs text-ink/45 mt-0.5">
             {articles.length} {articles.length === 1 ? "article" : "articles"} total
           </p>
         </div>
-        <div className="flex items-center gap-2.5 bg-white border border-gold/25 rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(122,18,55,0.06)] max-w-xl focus-within:border-gold/60 focus-within:shadow-[0_4px_16px_rgba(122,18,55,0.1)] transition-all">
+        <div className="flex items-center gap-2.5 bg-white border border-gold/25 rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(122,18,55,0.06)] focus-within:border-gold/60 focus-within:shadow-[0_4px_16px_rgba(122,18,55,0.1)] transition-all">
           <Search size={18} className="text-maroon/50 flex-shrink-0" />
           <input
             value={query}
@@ -87,7 +113,7 @@ export default function ArticlesPage() {
           {!query && <p className="text-xs mt-1">Neeche + button se naya article shamil karein.</p>}
         </div>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 px-4 sm:px-6 lg:px-10 py-3">
+        <ul className="flex flex-col gap-3 px-4 sm:px-6 py-3 lg:max-w-2xl lg:mx-auto">
           {filtered.map((a) => (
             <li key={a.id} className="card flex items-center gap-3.5 p-4">
               {a.photo_url ? (
@@ -104,6 +130,14 @@ export default function ArticlesPage() {
               )}
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-ink truncate">{a.name}</p>
+                <div className="flex items-center gap-3.5 text-xs mt-1">
+                  <span className="flex items-center gap-1 text-green-700 font-medium">
+                    <ShoppingBag size={12} /> {a.orderQty}
+                  </span>
+                  <span className="flex items-center gap-1 text-red-600 font-medium">
+                    <Undo2 size={12} /> {a.returnQty}
+                  </span>
+                </div>
               </div>
               <button
                 onClick={() => setEditing(a)}
@@ -140,9 +174,9 @@ export default function ArticlesPage() {
       {showAdd && (
         <ArticleFormModal
           onClose={() => setShowAdd(false)}
-          onSaved={(a) => {
-            setArticles((prev) => [...prev, a].sort((x, y) => x.name.localeCompare(y.name)));
+          onSaved={() => {
             setShowAdd(false);
+            load();
           }}
         />
       )}
@@ -151,9 +185,9 @@ export default function ArticlesPage() {
         <ArticleFormModal
           existing={editing}
           onClose={() => setEditing(null)}
-          onSaved={(a) => {
-            setArticles((prev) => prev.map((x) => (x.id === a.id ? a : x)).sort((x, y) => x.name.localeCompare(y.name)));
+          onSaved={() => {
             setEditing(null);
+            load();
           }}
         />
       )}

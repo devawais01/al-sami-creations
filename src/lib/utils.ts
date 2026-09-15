@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
-import { format, isToday, isYesterday } from "date-fns";
+import { format } from "date-fns";
 import type { Article, OrderItem, Size } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -7,10 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDateTime(iso: string) {
-  const d = new Date(iso);
-  if (isToday(d)) return `Aaj, ${format(d, "hh:mm a")}`;
-  if (isYesterday(d)) return `Kal, ${format(d, "hh:mm a")}`;
-  return format(d, "dd MMM yyyy, hh:mm a");
+  return format(new Date(iso), "dd MMM yyyy, hh:mm a");
 }
 
 export function formatDate(iso: string) {

@@ -44,7 +44,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="flex flex-col min-h-screen bg-page-gradient">
       {isRoot && (
         <header className="sticky top-0 z-30 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)]">
-          <div className="flex items-center justify-between px-4 sm:px-6 lg:px-10 py-3 w-full">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3 w-full lg:max-w-2xl lg:mx-auto">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow-sm flex-shrink-0 overflow-hidden p-1">
                 <Image
@@ -85,7 +85,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       {isRoot && (
         <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur border-t border-gold/25 safe-bottom shadow-[0_-4px_18px_rgba(122,18,55,0.08)]">
-          <div className="flex w-full sm:max-w-md sm:mx-auto">
+          <div className="flex w-full sm:max-w-md sm:mx-auto lg:max-w-2xl">
             {NAV.map(({ href, label, icon: Icon }) => {
               const active = pathname === href;
               return (

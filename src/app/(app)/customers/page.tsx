@@ -41,7 +41,7 @@ export default function CustomersPage() {
 
   return (
     <div className="relative min-h-[calc(100vh-8rem)]">
-      <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 lg:px-10 pt-4 pb-3">
+      <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 pt-4 pb-3 lg:max-w-2xl lg:mx-auto">
         <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
           <div>
             <h1 className="font-serif text-xl font-semibold text-maroon-dark">Customers</h1>
@@ -50,7 +50,7 @@ export default function CustomersPage() {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2.5 bg-white border border-gold/25 rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(122,18,55,0.06)] max-w-xl focus-within:border-gold/60 focus-within:shadow-[0_4px_16px_rgba(122,18,55,0.1)] transition-all">
+        <div className="flex items-center gap-2.5 bg-white border border-gold/25 rounded-2xl px-4 py-3 shadow-[0_2px_10px_rgba(122,18,55,0.06)] focus-within:border-gold/60 focus-within:shadow-[0_4px_16px_rgba(122,18,55,0.1)] transition-all">
           <Search size={18} className="text-maroon/50 flex-shrink-0" />
           <input
             value={query}
@@ -68,7 +68,7 @@ export default function CustomersPage() {
       ) : filtered.length === 0 ? (
         <EmptyState hasQuery={!!query} />
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 px-4 sm:px-6 lg:px-10 py-3">
+        <ul className="flex flex-col gap-3 px-4 sm:px-6 py-3 lg:max-w-2xl lg:mx-auto">
           {filtered.map((c) => (
             <li key={c.id}>
               <Link
