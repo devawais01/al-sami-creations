@@ -5,7 +5,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 export const metadata: Metadata = {
   title: "Al-Sami Creation's",
   description: "Al-Sami Creation's — Order & Customer Management",
-  icons: { icon: "/logo.png" },
+  icons: { icon: "/logo-mark.png" },
 };
 
 export const viewport = {

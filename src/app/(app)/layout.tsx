@@ -46,13 +46,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <header className="sticky top-0 z-30 bg-maroon-gradient text-white shadow-[0_2px_16px_rgba(122,18,55,0.25)]">
           <div className="flex items-center justify-between px-4 sm:px-6 lg:px-10 py-3 w-full">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow-sm flex-shrink-0 overflow-hidden">
+              <div className="w-9 h-9 rounded-full bg-white/95 flex items-center justify-center shadow-sm flex-shrink-0 overflow-hidden p-1">
                 <Image
-                  src="/logo-transparent.png"
+                  src="/logo-mark.png"
                   alt="Al-Sami"
-                  width={30}
-                  height={30}
-                  className="object-contain"
+                  width={359}
+                  height={261}
+                  className="object-contain w-full h-full"
                 />
               </div>
               <span className="font-serif font-semibold text-lg tracking-wide">Al-Sami Creation&apos;s</span>
