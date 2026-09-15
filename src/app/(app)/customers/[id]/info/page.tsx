@@ -48,7 +48,7 @@ export default function CustomerInfoPage() {
         <button onClick={() => router.back()} className="p-1.5 rounded-full hover:bg-white/10">
           <ArrowLeft size={20} />
         </button>
-        <span className="font-medium">Grahak ki Tafseelat</span>
+        <span className="font-medium">Customer ki Tafseelat</span>
       </header>
 
       <div className="flex flex-col items-center pt-8 pb-4 px-4">
@@ -96,7 +96,7 @@ export default function CustomerInfoPage() {
       {showDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
           <div className="bg-cream rounded-2xl shadow-2xl max-w-sm w-full p-5 space-y-3">
-            <h3 className="font-semibold text-maroon-dark">Grahak Delete Karein?</h3>
+            <h3 className="font-semibold text-maroon-dark">Customer Delete Karein?</h3>
             <p className="text-sm text-ink/70">
               &quot;{customer.name}&quot; aur unke <strong>tamam orders aur wapsi ki history</strong> hamesha
               ke liye delete ho jayenge. Yeh wapis nahi ho sakta.

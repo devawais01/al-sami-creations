@@ -61,7 +61,7 @@ export default function ArticlesPage() {
     <div className="relative min-h-[calc(100vh-8rem)]">
       <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 lg:px-10 pt-4 pb-3">
         <div className="mb-3">
-          <h1 className="font-serif text-xl font-semibold text-maroon-dark">Kapray</h1>
+          <h1 className="font-serif text-xl font-semibold text-maroon-dark">Articles</h1>
           <p className="text-xs text-ink/45 mt-0.5">
             {articles.length} {articles.length === 1 ? "article" : "articles"} total
           </p>

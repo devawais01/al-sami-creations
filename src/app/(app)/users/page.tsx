@@ -7,7 +7,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { Modal } from "@/components/Modal";
 import type { Profile } from "@/lib/types";
 import { formatDateTime } from "@/lib/utils";
-import { ArrowLeft, Plus, Loader2, ShieldCheck, User as UserIcon } from "lucide-react";
+import { ArrowLeft, Plus, Loader2, ShieldCheck, User as UserIcon, Trash2 } from "lucide-react";
 
 interface UserRow extends Profile {
   email: string;
@@ -20,6 +20,9 @@ export default function UsersPage() {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
+  const [deleting, setDeleting] = useState<UserRow | null>(null);
+  const [deleteBusy, setDeleteBusy] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const { data: sess } = await supabase.auth.getSession();
@@ -42,6 +45,26 @@ export default function UsersPage() {
       load();
     }
   }, [authLoading, profile, router, load]);
+
+  const confirmDelete = async () => {
+    if (!deleting) return;
+    setDeleteBusy(true);
+    setDeleteError(null);
+    const { data: sess } = await supabase.auth.getSession();
+    const token = sess.session?.access_token;
+    const res = await fetch(`/api/users?id=${deleting.id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const json = await res.json();
+    setDeleteBusy(false);
+    if (!res.ok) {
+      setDeleteError(json.error ?? "Kuch ghalat ho gaya.");
+      return;
+    }
+    setUsers((prev) => prev.filter((u) => u.id !== deleting.id));
+    setDeleting(null);
+  };
 
   if (authLoading || !profile || profile.role !== "admin") {
     return (
@@ -91,6 +114,18 @@ export default function UsersPage() {
                 <span className="text-[10px] font-semibold uppercase tracking-wide text-gold-dark">{u.role}</span>
                 <p className="text-[10px] text-ink/40">{formatDateTime(u.created_at)}</p>
               </div>
+              {u.id !== profile.id && (
+                <button
+                  onClick={() => {
+                    setDeleteError(null);
+                    setDeleting(u);
+                  }}
+                  className="p-2 rounded-full text-red-500/70 hover:bg-red-50 flex-shrink-0 transition-colors"
+                  title="Delete"
+                >
+                  <Trash2 size={16} />
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -104,6 +139,33 @@ export default function UsersPage() {
             load();
           }}
         />
+      )}
+
+      {deleting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-cream rounded-2xl shadow-2xl max-w-sm w-full p-5 space-y-3">
+            <h3 className="font-semibold text-maroon-dark">User Delete Karein?</h3>
+            <p className="text-sm text-ink/70">
+              &quot;{deleting.full_name}&quot; ka login hamesha ke liye delete ho jayega. Yeh wapis nahi ho sakta.
+            </p>
+            {deleteError && <p className="text-red-600 text-xs font-medium">{deleteError}</p>}
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setDeleting(null)}
+                className="flex-1 border border-gold/40 rounded-xl py-2.5 text-sm font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={deleteBusy}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-xl py-2.5 text-sm font-medium disabled:opacity-60"
+              >
+                {deleteBusy ? "Delete ho raha hai..." : "Delete Karein"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

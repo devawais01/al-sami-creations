@@ -78,3 +78,24 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ user: data.user });
 }
+
+export async function DELETE(req: NextRequest) {
+  const admin = await requireAdmin(req);
+  if (!admin) return NextResponse.json({ error: "Sirf admin ijazat rakhte hain." }, { status: 403 });
+
+  const id = req.nextUrl.searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "User id zaroori hai." }, { status: 400 });
+
+  if (id === admin.id) {
+    return NextResponse.json({ error: "Aap khud ko delete nahi kar saktay." }, { status: 400 });
+  }
+
+  const svc = serviceClient();
+  const { error } = await svc.auth.admin.deleteUser(id);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  return NextResponse.json({ ok: true });
+}

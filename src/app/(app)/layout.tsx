@@ -9,8 +9,8 @@ import { Users, Shirt, BarChart3, LogOut, UserCog, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/customers", label: "Grahak", icon: Users },
-  { href: "/articles", label: "Kapray", icon: Shirt },
+  { href: "/customers", label: "Customers", icon: Users },
+  { href: "/articles", label: "Articles", icon: Shirt },
   { href: "/hisaab", label: "Hisaab", icon: BarChart3 },
 ];
 

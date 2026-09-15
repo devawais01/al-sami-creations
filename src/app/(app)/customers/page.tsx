@@ -44,9 +44,9 @@ export default function CustomersPage() {
       <div className="sticky top-[57px] z-20 bg-page-gradient/95 backdrop-blur px-4 sm:px-6 lg:px-10 pt-4 pb-3">
         <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
           <div>
-            <h1 className="font-serif text-xl font-semibold text-maroon-dark">Grahak</h1>
+            <h1 className="font-serif text-xl font-semibold text-maroon-dark">Customers</h1>
             <p className="text-xs text-ink/45 mt-0.5">
-              {customers.length} {customers.length === 1 ? "grahak" : "grahak"} total
+              {customers.length} {customers.length === 1 ? "customer" : "customers"} total
             </p>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function CustomersPage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Grahak talaash karein..."
+            placeholder="Customer talaash karein..."
             className="flex-1 outline-none text-sm bg-transparent"
           />
         </div>
@@ -104,7 +104,7 @@ export default function CustomersPage() {
       <button
         onClick={() => setShowAdd(true)}
         className="fab text-white w-14 h-14 bottom-[5.5rem] right-5"
-        title="Naya Grahak"
+        title="Naya Customer"
       >
         <Plus size={26} />
       </button>
@@ -126,9 +126,9 @@ function EmptyState({ hasQuery }: { hasQuery: boolean }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6 text-center text-ink/50">
       <p className="text-sm">
-        {hasQuery ? "Koi grahak nahi mila." : "Abhi tak koi grahak shamil nahi kiya gaya."}
+        {hasQuery ? "Koi customer nahi mila." : "Abhi tak koi customer shamil nahi kiya gaya."}
       </p>
-      {!hasQuery && <p className="text-xs mt-1">Neeche + button se naya grahak shamil karein.</p>}
+      {!hasQuery && <p className="text-xs mt-1">Neeche + button se naya customer shamil karein.</p>}
     </div>
   );
 }

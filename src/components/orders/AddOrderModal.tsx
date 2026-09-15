@@ -110,7 +110,7 @@ export function AddOrderModal({
           </div>
         ) : filtered.length === 0 ? (
           <p className="text-center text-sm text-ink/50 py-8">
-            Pehle &quot;Kapray&quot; section mein articles shamil karein.
+            Pehle &quot;Article&quot; section mein articles shamil karein.
           </p>
         ) : (
           <div className="space-y-2 max-h-[46vh] overflow-y-auto pr-0.5">

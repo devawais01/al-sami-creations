@@ -198,6 +198,31 @@ create trigger trg_handle_new_user
   for each row execute function public.handle_new_user();
 
 -- ------------------------------------------------------------
+-- Allow deleting a staff/admin login without blocking on their
+-- historical records: created_by becomes NULL instead of the
+-- delete failing with a foreign key error.
+-- ------------------------------------------------------------
+alter table public.customers drop constraint if exists customers_created_by_fkey;
+alter table public.customers
+  add constraint customers_created_by_fkey foreign key (created_by)
+  references public.profiles(id) on delete set null;
+
+alter table public.articles drop constraint if exists articles_created_by_fkey;
+alter table public.articles
+  add constraint articles_created_by_fkey foreign key (created_by)
+  references public.profiles(id) on delete set null;
+
+alter table public.orders drop constraint if exists orders_created_by_fkey;
+alter table public.orders
+  add constraint orders_created_by_fkey foreign key (created_by)
+  references public.profiles(id) on delete set null;
+
+alter table public.returns drop constraint if exists returns_created_by_fkey;
+alter table public.returns
+  add constraint returns_created_by_fkey foreign key (created_by)
+  references public.profiles(id) on delete set null;
+
+-- ------------------------------------------------------------
 -- Row Level Security
 -- Every logged-in user (admin or staff) has identical read/write
 -- access, per your requirements. Two things are admin-only:

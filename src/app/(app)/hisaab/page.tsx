@@ -219,21 +219,21 @@ export default function HisaabPage() {
 
             <InsightSection
               icon={Users}
-              title="Sab Se Zyada Order Karne Wale Grahak"
+              title="Sab Se Zyada Order Karne Wale Customer"
               emptyText="Is muddat mein koi order nahi mila."
               rows={topCustomers.map((c) => ({ label: c.name, value: c.qty }))}
             />
 
             <InsightSection
               icon={Undo2}
-              title="Sab Se Zyada Wapsi Karne Wale Grahak"
+              title="Sab Se Zyada Wapsi Karne Wale Customer"
               emptyText="Is muddat mein koi wapsi nahi hui."
               rows={topReturners.map((c) => ({ label: c.name, value: c.qty }))}
             />
           </div>
 
           <p className="text-xs text-ink/40 text-center pt-2">
-            Kisi grahak ki poori history dekhne ke liye uske order screen mein &quot;History&quot; tab kholein.
+            Kisi customer ki poori history dekhne ke liye uske order screen mein &quot;History&quot; tab kholein.
           </p>
         </>
       )}

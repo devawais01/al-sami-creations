@@ -82,7 +82,7 @@ export function CustomerFormModal({
   };
 
   return (
-    <Modal title={existing ? "Grahak Edit Karein" : "Naya Grahak Shamil Karein"} onClose={onClose}>
+    <Modal title={existing ? "Customer Edit Karein" : "Naya Customer Shamil Karein"} onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col items-center gap-2">
           <label className="relative cursor-pointer group">
@@ -105,7 +105,7 @@ export function CustomerFormModal({
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Grahak ka naam"
+            placeholder="Customer ka naam"
             className="input"
           />
         </Field>
@@ -146,7 +146,7 @@ export function CustomerFormModal({
           className="w-full flex items-center justify-center gap-2 bg-maroon hover:bg-maroon-dark text-white font-medium rounded-xl py-3 transition-colors disabled:opacity-60"
         >
           {saving && <Loader2 size={18} className="animate-spin" />}
-          {existing ? "Tabdeeli Save Karein" : "Grahak Shamil Karein"}
+          {existing ? "Tabdeeli Save Karein" : "Customer Shamil Karein"}
         </button>
       </form>
     </Modal>
